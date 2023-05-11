@@ -1,0 +1,37 @@
+@startuml
+Actor User
+Actor System
+
+participant MovieCatalog
+participant ShowtimeCatalog
+participant Payment
+participant Reservation
+participant SeatAvailability
+
+===Search===
+User -> System : /POST movie/title 
+System-> User : 201
+System -> MovieCatalog :/GET Retrieve matching movies
+MovieCatalog -> System : 200
+
+===Retrieve===
+User -> System: GET/movie:id
+System -> MovieCatalog: Retrieve movie details
+System -> ShowtimeCatalog: Retrieve showtime details
+System -> User: 200
+
+User -> System: Get /showtime/seats
+System -> ShowtimeCatalog: 200
+
+===Reservation===
+User-> System: POST /reservation
+System -> SeatAvailability: Check availability
+System -> Reservation: Create reservation
+System -> User: 201 
+
+===Payment===
+User -> System: POST /payment
+System -> Payment: Process Payment
+Payment -> System: 200
+System -> User: 200
+@enduml

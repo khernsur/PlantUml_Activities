@@ -1,0 +1,30 @@
+@startuml
+
+Actor User
+participant Order
+participant Menu
+participant Login
+participant Payment
+participant Gateway
+
+=== Login ===
+User -> Login : GET/ userAccount
+Login -> User : 200
+
+=== Add book to cart ===
+User -> Order : POST/order:id/item
+Order -> Menu : GET /product:id
+Menu -> Order : 200
+Order -> User : 201
+
+===Checkout===
+User -> Payment : POST /payment
+Payment -> Gateway : POST /payment
+Gateway -> Payment : 200
+Payment -> Gateway : PUT /paymentid
+Gateway -> Payment : 204
+
+
+
+
+@enduml
